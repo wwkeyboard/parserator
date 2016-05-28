@@ -1,6 +1,9 @@
 package parserator
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 type testRune struct {
 	trial rune
@@ -35,5 +38,18 @@ func TestIsLetter(t *testing.T) {
 		if isLetter(tt.trial) != tt.want {
 			t.Errorf("incorrect whitespace detection of '%s'", tt.trial)
 		}
+	}
+}
+
+func TestScanWhitespace(t *testing.T) {
+	s := NewScanner(strings.NewReader("    foo"))
+	tok, lit := s.scanWhitespace()
+
+	if tok != WS {
+		t.Error("scanWhitespace returned incorrect token")
+	}
+
+	if lit != "    " {
+		t.Error("scanWhitespace didn't slurp all of the whitespace")
 	}
 }
