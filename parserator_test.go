@@ -41,6 +41,22 @@ func TestIsLetter(t *testing.T) {
 	}
 }
 
+func TestIsDigit(t *testing.T) {
+	tests := []testRune{
+		{'1', true},
+		{'0', true},
+		{'5', true},
+		{' ', false},
+		{'a', false},
+		{'*', false},
+	}
+	for _, tt := range tests {
+		if isDigit(tt.trial) != tt.want {
+			t.Errorf("incorrect digit detection of '%v'", tt.trial)
+		}
+	}
+}
+
 func TestScanWhitespace(t *testing.T) {
 	s := NewScanner(strings.NewReader("    foo"))
 	tok, lit := s.scanWhitespace()
@@ -51,5 +67,17 @@ func TestScanWhitespace(t *testing.T) {
 
 	if lit != "    " {
 		t.Error("scanWhitespace didn't slurp all of the whitespace")
+	}
+}
+
+func TestScanIdent(t *testing.T) {
+	s := NewScanner(strings.NewReader("blar"))
+	tok, lit := s.scanIdent()
+
+	if tok != IDENT {
+		t.Error("scanIdent didn't detect identifier")
+	}
+	if lit != "blar" {
+		t.Error("scanIdent didn't detect whole identifier")
 	}
 }
